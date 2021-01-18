@@ -22,7 +22,7 @@ jobs:
           pip install pypandoc sklearn
           pip install pypandoc wheel nlu  pytest modin[ray]  pyspark==2.4.7
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: NLU Basic Component tests
+       - name: NLU Basic Component tests
         if: always()
         run: |
           python -m unittest  discover   -s './tests/nlu_core_tests/component_tests/basic_component_tests' -p '*tests.py'
@@ -106,11 +106,7 @@ jobs:
         if: always()
         run: |
           python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*sentiment_dl*.py'
-      - name: NLU Saving and Loading tests
-        if: always()
-        run: |
-          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/trained_pipe_tests' -p '*tests.py'
-        # Too hevy for Github actions
+# Too hevy for Github actions
 #      - name: NLU Training classifier tests
 #        if: always()
 #        run: |
@@ -126,11 +122,14 @@ jobs:
       - name: NLU Training POS tests
         if: always()
         run: |
-            python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*pos*.py'
+          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*pos*.py'
 #      - name: NLU Saving and Loading tests
 #        if: always()
 #        run: |
 #          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/trained_pipe_tests' -p '*tests.py'
+
+
+
 #      - name: NLU Modin tests
 #        if: always()
 #        run: |
