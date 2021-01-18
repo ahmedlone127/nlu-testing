@@ -1,11 +1,14 @@
 name: NLU Tests
+
 on: [push]
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: [3.6]
     steps:
       - uses: actions/setup-java@v1
         with:
@@ -20,9 +23,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pypandoc sklearn
-          pip install pypandoc wheel nlu  pytest modin[ray]  pyspark==2.4.7
+          pip install  wheel nlu  pytest modin[ray] pyspark==2.4.7
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-       - name: NLU Basic Component tests
+      - name: NLU Basic Component tests
         if: always()
         run: |
           python -m unittest  discover   -s './tests/nlu_core_tests/component_tests/basic_component_tests' -p '*tests.py'
@@ -127,12 +130,8 @@ jobs:
 #        if: always()
 #        run: |
 #          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/trained_pipe_tests' -p '*tests.py'
-
-
-
 #      - name: NLU Modin tests
 #        if: always()
 #        run: |
 #          python -m unittest  discover   -s './tests/modin' -p '*tests.py'
-
-# anaconda upload /tmp/conda/noarch/nlu-1.0.5-py37_0.tar.bz2 
+# anaconda upload /tmp/conda/noarch/nlu-1.0.5-py37_0.tar.bz2
