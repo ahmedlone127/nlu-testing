@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6]
+        python-version: [3.7]
     steps:
       - uses: actions/setup-java@v1
         with:
@@ -18,14 +18,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python3.6 -m pip install --upgrade pip
-          python3.6 -m pip install pypandoc sklearn
-          python3.6 -m pip install  wheel nlu  pytest modin[ray] pyspark==2.4.7
-          if [ -f requirements.txt ]; then python3.6 -m pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip
+          pip install pypandoc sklearn
+          pip install pypandoc wheel nlu  pytest modin[ray]  pyspark=2.4.7
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: NLU Basic Component tests
         if: always()
         run: |
-          python3.6 -m unittest  discover   -s './tests/nlu_core_tests/component_tests/basic_component_tests' -p '*tests.py'
+          python -m unittest  discover   -s './tests/nlu_core_tests/component_tests/basic_component_tests' -p '*tests.py'
       - name: NLU Chunker Component tests
         if: always()
         run: |
@@ -102,39 +102,11 @@ jobs:
         if: always()
         run: |
           python -m unittest  discover   -s './tests/nlu_core_tests/pipeline_tests' -p '*tests.py'
-      - name: NLU Training sentiment tests
+      - name: NLU Training Classifiers tests
         if: always()
         run: |
-          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*sentiment_dl*.py'
-# Too hevy for Github actions
-#      - name: NLU Training classifier tests
-#        if: always()
-#        run: |
-#          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*classifier_dl*.py'
-      - name: NLU Training multi classifier tests
+          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*tests.py'
+      - name: NLU Saving and Loading tests
         if: always()
         run: |
-          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*multi*.py'
-      - name: NLU Training NER tests
-        if: always()
-        run: |
-          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*ner*.py'
-      - name: NLU Training POS tests
-        if: always()
-        run: |
-          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/classifiers' -p '*pos*.py'
-
-
-#      - name: NLU Saving and Loading tests
-#        if: always()
-#        run: |
-#          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/trained_pipe_tests' -p '*tests.py'
-
-
-
-#      - name: NLU Modin tests
-#        if: always()
-#        run: |
-#          python -m unittest  discover   -s './tests/modin' -p '*tests.py'
-
-# anaconda upload /tmp/conda/noarch/nlu-1.0.5-py37_0.tar.bz2
+          python -m unittest  discover   -s './tests/nlu_core_tests/training_tests/trained_pipe_tests' -p '*tests.py'
